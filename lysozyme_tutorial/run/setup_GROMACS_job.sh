@@ -31,7 +31,7 @@ editconf -f $GROMACS_PDB.gro -o $GROMACS_PDB-box.gro -bt $GROMACS_BOXTYPE -c \
 -d $GROMACS_BOXORIENTATION -box $GROMACS_BOXSIZE $GROMACS_BOXSIZE $GROMACS_BOXSIZE \
 -center $GROMACS_BOXCENTER $GROMACS_BOXCENTER $GROMACS_BOXCENTER >> GROMACS-$GROMACS_PDB.out 2>&1
 
-genbox -cp $GROMACS_PDB-box.gro -cs spc216.gro -p topol.top -o $GROMACS_PDB-solv.gro >> GROMACS-$GROMACS_PDB.out 2>&1
+solvate -cp $GROMACS_PDB-box.gro -cs spc216.gro -p topol.top -o $GROMACS_PDB-solv.gro >> GROMACS-$GROMACS_PDB.out 2>&1
 
 echo " " >> GROMACS-$GROMACS_PDB.out 2>&1
 
