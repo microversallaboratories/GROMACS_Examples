@@ -12,6 +12,9 @@ GROMACS_BOXORIENTATION="1.5"
 GROMACS_BOXSIZE="5.0"
 GROMACS_BOXCENTER="2.5"
 
+# Define directory to hold the output in
+PBS_O_WORKDIR=`pwd`
+
 #Setup GROMACS Job. Probably not necessary to edit past this point.
 if [ -z "$GROMACS_PDB" ]; then
     echo "USAGE: ./setup_GROMACS_job.sh pdb_filename"
@@ -24,14 +27,14 @@ find  '../MDP_Files' -name '*.mdp' -exec ln -s {} . \;
 
 echo "Converting PDB to GMX format and setting water model and force field types" >  GROMACS-$GROMACS_PDB.out 2>&1
 
-pdb2gmx -ignh -ff $GROMACS_FORCEFIELD -water $GROMACS_WATERMODEL \
+gmx pdb2gmx -ignh -ff $GROMACS_FORCEFIELD -water $GROMACS_WATERMODEL \
 -p topol.top -f $GROMACS_PDB.pdb -o $GROMACS_PDB.gro >> GROMACS-$GROMACS_PDB.out 2>&1
 
-editconf -f $GROMACS_PDB.gro -o $GROMACS_PDB-box.gro -bt $GROMACS_BOXTYPE -c \
+gmx editconf -f $GROMACS_PDB.gro -o $GROMACS_PDB-box.gro -bt $GROMACS_BOXTYPE -c \
 -d $GROMACS_BOXORIENTATION -box $GROMACS_BOXSIZE $GROMACS_BOXSIZE $GROMACS_BOXSIZE \
 -center $GROMACS_BOXCENTER $GROMACS_BOXCENTER $GROMACS_BOXCENTER >> GROMACS-$GROMACS_PDB.out 2>&1
 
-solvate -cp $GROMACS_PDB-box.gro -cs spc216.gro -p topol.top -o $GROMACS_PDB-solv.gro >> GROMACS-$GROMACS_PDB.out 2>&1
+gmx solvate -cp $GROMACS_PDB-box.gro -cs spc216.gro -p topol.top -o $GROMACS_PDB-solv.gro >> GROMACS-$GROMACS_PDB.out 2>&1
 
 echo " " >> GROMACS-$GROMACS_PDB.out 2>&1
 
@@ -59,5 +62,5 @@ else
 fi
 
 echo "Preprocessing GROMACS Configuration" >> GROMACS-$GROMACS_PDB.out
-grompp -f energy_minimization.mdp -c $GROMACS_PDB-solv-ions.gro -p topol.top -maxwarn 3 -v -o em.tpr
+gmx grompp -f energy_minimization.mdp -c $GROMACS_PDB-solv-ions.gro -p topol.top -maxwarn 3 -v -o em.tpr
 
