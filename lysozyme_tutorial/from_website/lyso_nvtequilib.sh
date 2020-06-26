@@ -1,9 +1,13 @@
 #!/bin/bash
 
-# Define MD datapath and MD anapath
-DATAPATH=/Users/jacobnorth/Box/extracurriculars/research/SURE_S2020_fileshare/sure_data
-SIMPATH=$DATAPATH/
-ANAPATH=/Users/jacobnorth/Box/extracurriculars/research/SURE_S2020_fileshare/sure_data
+# Download the .mdp for the NVT equilib
+wget http://www.mdtutorials.com/gmx/lysozyme/Files/nvt.mdp
 
-# Run an nvt equilibration
+# Run an NVT equilibration
 gmx grompp -f nvt.mdp -c em.gro -r em.gro -p topol.top -o nvt.tpr
+
+# Run the NVT equilibration
+gmx mdrun -deffnm nvt
+
+# Create plot of temperature, ensure T is stable
+gmx energy -f nvt.edr -o temperature.xvg
