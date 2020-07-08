@@ -22,6 +22,10 @@ mkdir -p /Users/jacobnorth/"$JLN_ANAPATH"
 echo "Simulation filepath is:"
 echo ${JLN_SIM_PATH}
 
+#%%%%%%%%%%%%%%%%%%%</CONFIGURATION>%%%%%%%%%%%%%%%%%%%#
+
+#%%%%%%%%%%%%%%%%%%%<GROMACS CONF>%%%%%%%%%%%%%%%%%%%%%#
+
 # Gromacs parameters
 GROMACS_PDB=$1				# Take in first cmdlnarg
 PDB_REMOVE="HOH"
@@ -40,7 +44,7 @@ if [ -z "$JLN_SIM_PATH/$GROMACS_PDB" ]; then
 	exit
 fi
 
-#%%%%%%%%%%%%%%%%%%%</CONFIGURATION>%%%%%%%%%%%%%%%%%%%#
+#%%%%%%%%%%%%%%%%%%%</GROMACS CONF>%%%%%%%%%%%%%%%%%%%%#
 
 # Then, just call all those scripts in order :)
 
